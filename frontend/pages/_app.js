@@ -7,7 +7,6 @@ class MyApp extends App {
 
     return (
       <Container>
-        {/* <p>Hey, I'm on every page!</p> */}
         <Page>
           <Component />
         </Page>
