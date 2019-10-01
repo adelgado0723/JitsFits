@@ -8,8 +8,8 @@ type Mutation {
     image: String
     largeImage: String
   ): Item!
-  # removeDog(name: String!): [Dog]
   updateItem(id: ID!, title: String, description: String, price: Int): Item!
+  deleteItem(id: ID!): Item
 }
 
 type Query {

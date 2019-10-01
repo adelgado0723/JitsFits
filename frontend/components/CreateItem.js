@@ -78,11 +78,11 @@ class CreateItem extends Component {
             onSubmit={async (event) => {
               event.preventDefault();
               const res = await createItem();
+              console.log(res);
               Router.push({
                 pathname: '/item',
                 query: { id: res.data.createItem.id },
               });
-              console.log(res);
             }}
           >
             <ErrorHandler error={error} />
