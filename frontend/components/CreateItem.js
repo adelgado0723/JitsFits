@@ -29,11 +29,11 @@ const CREATE_ITEM_MUTATION = gql`
 
 class CreateItem extends Component {
   state = {
-    title: 'Rilion Gracie Academy Gi',
-    description: 'Lightweight RGA Competition Gi with double stitching.',
-    image: 'RGACompetitionGi.jpg',
-    largeImage: 'LargeRGACompetitionGi.jpg',
-    price: 16000,
+    title: '',
+    description: '',
+    image: '',
+    largeImage: '',
+    price: 0,
   };
 
   handleChange = (event) => {
