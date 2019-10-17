@@ -14,7 +14,19 @@ const Query = {
   // we can use:
   items: forwardTo("db"),
   item: forwardTo("db"),
-  itemsConnection: forwardTo("db")
+  itemsConnection: forwardTo("db"),
+  me(parent, args, ctx, info) {
+    // Check if there is a userId
+    if (!ctx.request.userId) {
+      return null;
+    }
+    return ctx.db.query.user(
+      {
+        where: { id: ctx.request.userId }
+      },
+      info
+    );
+  }
 
   // Later, you can go in and write custom resolvers
   // that do what you need them to do.
