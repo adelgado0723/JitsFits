@@ -99,7 +99,8 @@ const Mutations = {
 
   async signin(parent, { email, password }, ctx, info) {
     // 1. Check if there is a user with that email
-    const user = await ctx.db.query.user({ where: { email } });
+    const lowercaseEmail = email.toLowerCase();
+    const user = await ctx.db.query.user({ where: { email: lowercaseEmail } });
     if (!user) {
       throw new Error(`No such user found for email ${email}`);
     }
