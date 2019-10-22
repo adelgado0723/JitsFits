@@ -52,7 +52,7 @@ class Signup extends Component {
             <fieldset disabled={loading} aria-busy={loading}>
               <h2>Sign Up For An Account</h2>
               <ErrorHandler error={error} />
-              <label htmlfor="email">
+              <label htmlFor="email">
                 Email
                 <input
                   type="email"
@@ -62,7 +62,7 @@ class Signup extends Component {
                   onChange={this.saveToState}
                 />
               </label>
-              <label htmlfor="name">
+              <label htmlFor="name">
                 Name
                 <input
                   type="text"
@@ -72,7 +72,7 @@ class Signup extends Component {
                   onChange={this.saveToState}
                 />
               </label>
-              <label htmlfor="password">
+              <label htmlFor="password">
                 Password
                 <input
                   type="password"
