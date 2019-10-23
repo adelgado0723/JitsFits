@@ -21,9 +21,9 @@ class DeleteItem extends Component {
     console.log(data, payload);
 
     // 2. Filter the deleted item out of the page
-    data.items = data.items.filter((item) => {
-      item.id !== payload.data.deleteItem.id;
-    });
+    data.items = data.items.filter(
+      (item) => item.id !== payload.data.deleteItem.id
+    );
     // 3. Put the remaining items back in cache
     cache.writeQuery({ query: ALL_ITEMS_QUERY, data });
   };

@@ -20,11 +20,18 @@ const ONE_HOUR_IN_MILLISECS = MILLISECS_PER_SEC * SECS_PER_MIN * MINS_PER_HOUR;
 const Mutations = {
   async createItem(parent, args, ctx, info) {
     // TODO: check if they are logged in
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
 
     // createItem returns a promise
     const item = await ctx.db.mutation.createItem(
       {
         data: {
+          // This is how you create a relationship between and item and the user
+          user: {
+            id: ctx.request.userId
+          },
           ...args
         }
       },
