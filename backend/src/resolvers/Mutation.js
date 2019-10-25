@@ -19,7 +19,7 @@ const ONE_HOUR_IN_MILLISECS = MILLISECS_PER_SEC * SECS_PER_MIN * MINS_PER_HOUR;
 
 const Mutations = {
   async createItem(parent, args, ctx, info) {
-    // TODO: check if they are logged in
+    // Check if they are logged in
     if (!ctx.request.userId) {
       throw new Error("You must be logged in to do that!");
     }
@@ -30,7 +30,9 @@ const Mutations = {
         data: {
           // This is how you create a relationship between and item and the user
           user: {
-            id: ctx.request.userId
+            connect: {
+              id: ctx.request.userId
+            }
           },
           ...args
         }
@@ -41,7 +43,7 @@ const Mutations = {
   },
 
   updateItem(parent, args, ctx, info) {
-    // First, take a copu of the updates
+    // First, take a copy of the updates
     const updates = { ...args };
 
     // Remove ID from the updates since ids
