@@ -26,6 +26,13 @@ const Query = {
       },
       info
     );
+  },
+  async users(parent, args, ctx, info) {
+    // 1. Check if the user is logged in
+    if(!ctx.request.userId)
+    // 2. Check if the user has teh permissions to query
+    // all user permissions
+    // 3. If they do, query all user permissions
   }
 
   // Later, you can go in and write custom resolvers
