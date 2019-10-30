@@ -10,7 +10,7 @@ server.express.use(cookieParser());
 
 // TODO: Use express middleware to populate current user
 
-// Decode JWT to get user id for each request
+// 1. Decode JWT to get user id for each request
 server.express.use((req, res, next) => {
   const { token } = req.cookies;
 
@@ -22,6 +22,30 @@ server.express.use((req, res, next) => {
 
   next();
 });
+
+// 2. Create a middleware that populates the user on each request
+server.express.use(async (req, res, next) => {
+  // if they aren't logged in, then skip this
+  if (!req.userId) return next();
+
+  const user = await db.query.user(
+    { where: { id: req.userId } },
+    "{id, permissions, email, name}"
+  );
+  req.user = user;
+  next();
+});
+
+// Code to change permisions
+
+// server.express.use(async (req, res, next) => {
+//   const updatedUser = await db.mutation.updateUser({
+//     data: { permissions: { set: ["USER", "ADMIN"] } },
+//     where: { email: req.user.email }
+//   });
+//   console.log(updatedUser);
+//   next();
+// });
 
 server.start(
   {
