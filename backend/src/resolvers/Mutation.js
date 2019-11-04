@@ -256,6 +256,81 @@ const Mutations = {
       },
       info
     );
+  },
+  async addToCart(parent, args, ctx, info) {
+    // 1. Make sure they are signed in
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error(
+        "You must be signed in to add items to the shopping cart!"
+      );
+    }
+
+    // 2. Query the user's current cart
+    const [existingCartItem] = await ctx.db.query.cartItems({
+      where: {
+        user: { id: userId },
+        item: { id: args.id }
+      }
+    });
+
+    // 3. Check if item is already in cart and increment by one if it is
+    if (existingCartItem) {
+      console.log("this item is already in the cart!");
+      return ctx.db.mutation.updateCartItem(
+        {
+          where: { id: existingCartItem.id },
+          data: { quantity: existingCartItem.quantity + 1 }
+        },
+        info
+      );
+    }
+
+    // 4. If it is not, create a new CartItem for that user
+    return ctx.db.mutation.createCartItem(
+      {
+        data: {
+          // This is how you make the relationship to a user
+          user: {
+            connect: { id: userId }
+          },
+          // This is how you make the relationship to an item
+          item: {
+            connect: { id: args.id }
+          }
+        }
+      },
+      info
+    );
+  },
+
+  // NOTE: info is the query coming in from the client side
+  async removeFromCart(parent, args, ctx, info) {
+    // 1. Find the cart item
+    const cartItem = await ctx.db.query.cartItem(
+      {
+        where: { id: args.id }
+      },
+      `{ id, user {id} }`
+    );
+
+    // 2. Make sure we found an item
+    if (!cartItem) {
+      throw new Error("No CartItem Found!");
+    }
+
+    // 3. Make sure they own that cart item
+    if (cartItem.user.id !== ctx.request.userId) {
+      throw new Error("You must own the item to delete it.");
+    }
+
+    // 4. Delete that cart item
+    return ctx.db.mutation.deleteCartItem(
+      {
+        where: { id: args.id }
+      },
+      info
+    );
   }
 };
 
