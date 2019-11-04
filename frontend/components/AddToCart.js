@@ -16,6 +16,8 @@ class AddToCart extends React.Component {
   render() {
     const { id } = this.props;
     return (
+      // TODO: Add update function and optimistic response to have items
+      // instantly added to cart
       <Mutation
         mutation={ADD_TO_CART_MUTATION}
         variables={{ id: id }}
