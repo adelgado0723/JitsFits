@@ -24,6 +24,9 @@ const NavStyles = styled.ul`
       font-size: 10px;
       padding: 0 10px;
     }
+    @media (max-width: 950px) {
+      font-size: 1.5rem;
+    }
     &:before {
       content: '';
       width: 2px;
