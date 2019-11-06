@@ -32,7 +32,11 @@ const Nav = () => (
               {(toggleCart) => (
                 <button onClick={toggleCart}>
                   My Cart
-                  <CartCount count={100}></CartCount>
+                  <CartCount
+                    count={me.cart.reduce((tally, cartItem) => {
+                      return tally + cartItem.quantity;
+                    }, 0)}
+                  ></CartCount>
                 </button>
               )}
             </Mutation>
