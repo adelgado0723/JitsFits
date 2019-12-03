@@ -21,7 +21,7 @@ class TakeMyMoney extends React.Component {
           <StripeCheckout
             amount={calcTotalPrice(me.cart)}
             name="Jits Fits"
-            description={`Order of ${totalItems} items!`}
+            description={`Order of ${totalItems(me.cart)} items!`}
           >
             {this.props.children}
           </StripeCheckout>
