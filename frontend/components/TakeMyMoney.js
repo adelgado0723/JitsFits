@@ -8,12 +8,17 @@ import gql from 'graphql-tag';
 import calcTotalPrice from '../lib/calcTotalPrice';
 import Error from './ErrorMessage';
 import User, { CURRENT_USER_QUERY } from './User';
+import { publishableStripeKey } from '../config.js';
 
 function totalItems(cart) {
   return cart.reduce((tally, cartItem) => tally + cartItem.quantity, 0);
 }
 
 class TakeMyMoney extends React.Component {
+  onToken = (res) => {
+    console.log('On Token Called!');
+    console.log(res.id);
+  };
   render() {
     return (
       <User>
@@ -22,6 +27,11 @@ class TakeMyMoney extends React.Component {
             amount={calcTotalPrice(me.cart)}
             name="Jits Fits"
             description={`Order of ${totalItems(me.cart)} items!`}
+            image={me.cart[0].item && me.cart[0].item.image}
+            stripeKey={publishableStripeKey}
+            currency="USD"
+            email={me.email}
+            token={(res) => this.onToken(res)}
           >
             {this.props.children}
           </StripeCheckout>
