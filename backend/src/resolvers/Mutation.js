@@ -4,6 +4,7 @@ const { randomBytes } = require("crypto");
 const { promisify } = require("util");
 const { transport, makeANiceEmail } = require("../mail");
 const { hasPermission } = require("../utils");
+const stripe = require("../stripe");
 
 const MILLISECS_PER_SEC = 1000;
 const SECS_PER_MIN = 60;
@@ -347,7 +348,7 @@ const Mutations = {
         cart{
           id
           quantity
-          item { title price id description image}
+          item { title price id description image largeImage}
         }
       }`
     );
@@ -358,11 +359,45 @@ const Mutations = {
       0
     );
     console.log(`Going to charge a total of ${amount}`);
+
     // 3. Create the stripe charge
+    const charge = await stripe.charges.create({
+      amount,
+      currency: "USD",
+      source: args.token
+    });
+
     // 4. Convert the CartItems to OrderItems
+    const orderItems = user.cart.map(cartItem => {
+      const orderItem = {
+        ...cartItem.item,
+        quantity: cartItem.quantity,
+        user: { connect: { id: user.id } }
+      };
+      delete orderItem.id;
+      return orderItem;
+    });
+
     // 5. Create the Order
+    const order = await ctx.db.mutation.createOrder({
+      data: {
+        total: charge.amount,
+        charge: charge.id,
+        items: { create: orderItems },
+        user: { connect: { id: userId } }
+      }
+    });
+
     // 6. Clean Up - Clear the User's cart, delete cartItems
+    const cartItemIds = user.cart.map(cartItem => cartItem.id);
+    await ctx.db.mutation.deleteManyCartItems({
+      where: {
+        id_in: cartItemIds
+      }
+    });
+
     // 7. Return the order to the client
+    return order;
   }
 };
 
