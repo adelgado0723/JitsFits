@@ -6,6 +6,7 @@ import Head from 'next/head';
 import gql from 'graphql-tag';
 import formatMoney from '../lib/formatMoney';
 import Error from './ErrorMessage';
+import OrderItem from './OrderItem';
 import OrderStyles from './styles/OrderStyles';
 
 const SINGLE_ORDER_QUERY = gql`
@@ -69,18 +70,9 @@ class Order extends Component {
                 <span>Item Count</span>
                 <span>{order.items.length}</span>
               </p>
-              <div classname="items">
+              <div className="items">
                 {order.items.map((item) => (
-                  <div className="order-item" key={item.id}>
-                    <img src={item.image} alt={item.title} />
-                    <div className="item-details">
-                      <h2>{item.title}</h2>
-                      <p>Qty: {item.quantity}</p>
-                      <p>Each: {formatMoney(item.price)}</p>
-                      <p>SubTotal: {formatMoney(item.price * item.quantity)}</p>
-                      <p>{item.description}</p>
-                    </div>
-                  </div>
+                  <OrderItem item={item} key={item.id} />
                 ))}
               </div>
             </OrderStyles>

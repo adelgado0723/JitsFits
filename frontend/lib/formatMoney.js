@@ -1,3 +1,11 @@
+// Note: function exhibits strange rounding behavior with
+// very large number as below:
+// expect(formatMoney(111111111111111134)).toEqual(
+//   '$1,111,111,111,111,111.34'
+// );
+// expect(formatMoney(129394059381294534)).toEqual(
+//   '$1,293,940,593,812,945.34'
+// );
 export default function(amount) {
   const options = {
     style: 'currency',

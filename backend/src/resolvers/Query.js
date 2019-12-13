@@ -33,7 +33,7 @@ const Query = {
     if (!ctx.request.userId) {
       throw new Error("You must be logged in!");
     }
-    // 2. Check if the user has teh permissions to query
+    // 2. Check if the user has the permissions to query
     // all user permissions
     hasPermission(ctx.request.user, ["ADMIN", "PERMISSIONUPDATE"]);
 
@@ -66,6 +66,22 @@ const Query = {
 
     // 4. Return the order
     return order;
+  },
+
+  async orders(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    // 1. Make sure they are logged in
+    if (!ctx.request.userId) {
+      throw new Error("You aren't logged in!");
+    }
+
+    // 2. Query the orders that user has made
+    return await ctx.db.query.orders(
+      {
+        where: { user: { id: userId } }
+      },
+      info
+    );
   }
 
   // Later, you can go in and write custom resolvers
