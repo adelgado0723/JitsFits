@@ -71,7 +71,7 @@ class Orders extends Component {
                               Date.parse(order.createdAt),
                               new Date()
                             )}{' '}
-                            agoth
+                            ago
                           </p>
                           <p>{formatMoney(order.total)}</p>
                         </div>
