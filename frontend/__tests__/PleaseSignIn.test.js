@@ -1,11 +1,9 @@
-import { shallow, mount } from 'enzyme';
-import toJSON from 'enzyme-to-json';
+import { mount } from 'enzyme';
 import wait from 'waait';
 import PleaseSignIn from '../components/PleaseSignIn';
 import { CURRENT_USER_QUERY } from '../components/User';
 import { MockedProvider } from 'react-apollo/test-utils';
-import { fakeItem, fakeUser } from '../lib/testUtils';
-import { isCompositeType } from 'graphql';
+import { fakeUser } from '../lib/testUtils';
 
 const notSignedInMocks = [
   {
@@ -30,6 +28,24 @@ describe('<PleaseSignIn />', () => {
     await wait();
     wrapper.update();
     expect(wrapper.text()).toContain('Please Sign In before Continuing');
-    console.log(wrapper.debug());
+    expect(wrapper.find('Signin').exists()).toBe(true);
+    // console.log(wrapper.debug());
+  });
+
+  it('renders the child component when the user is signed in', async () => {
+    const Hey = () => <p>Hey!</p>;
+    const wrapper = mount(
+      <MockedProvider mocks={signedInMocks}>
+        <PleaseSignIn>
+          <Hey></Hey>
+        </PleaseSignIn>
+      </MockedProvider>
+    );
+    await wait();
+    wrapper.update();
+    // console.log(wrapper.debug());
+    // expect(wrapper.find('Hey').exists()).toBe(true);
+
+    expect(wrapper.contains(<Hey />)).toBe(true);
   });
 });
