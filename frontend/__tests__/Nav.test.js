@@ -62,6 +62,24 @@ describe('<Nav />', () => {
     // that differs from a regular account nav
     expect(nav.children().length).toBe(6);
     expect(nav.text()).toContain('Sign Out');
+
+    const sell = wrapper.find('Link[href="/sell"]');
+    expect(sell.exists()).toBe(true);
+    expect(sell.text()).toContain('Sell');
+
+    const me = wrapper.find('Link[href="/me"]');
+    expect(me.exists()).toBe(true);
+    expect(me.text()).toContain('Account');
+
+    const items = wrapper.find('Link[href="/items"]');
+    expect(items.exists()).toBe(true);
+    expect(items.text()).toContain('Shop');
+
+    const orders = wrapper.find('Link[href="/orders"]');
+    expect(orders.exists()).toBe(true);
+    expect(orders.text()).toContain('Orders');
+
+    // console.log(sell.text());
   });
 
   it('renders the right amount of items in the cart', async () => {
