@@ -91,7 +91,8 @@ describe('<Nav />', () => {
     await wait();
     wrapper.update();
     const nav = wrapper.find('ul[data-test="nav"]');
-    console.log(nav.debug());
-    // expect(toJSON(nav)).toMatchSnapshot();
+    const count = nav.find('div.count');
+    // console.log(count.debug());
+    expect(toJSON(count)).toMatchSnapshot();
   });
 });
